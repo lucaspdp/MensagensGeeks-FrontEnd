@@ -30,11 +30,11 @@ export default function Main({history}) {
     return (
         <>
             <Container>
-                {loading && (
+                {/*loading && (
                     <Loading>
                         <span>Carregando...</span>
                     </Loading>
-                )}
+                )*/}
                 <h1>Mensagens</h1>
                 <Form onSubmit={handleLogin}>
                     <input type='text' placeholder='Código de acesso' value={code} onChange={t=>setCode(t.target.value)}/>
