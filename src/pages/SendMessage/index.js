@@ -1,17 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../../services/api';
 
 import { Container, Form, Selectable, ExitButton } from './styles';
 import { FaArrowRight, FaWindowClose } from 'react-icons/fa';
 
+import Creatable from 'react-select/creatable';
 export default function SendMessage({history}) {
 
     const [fase, setFase] = useState('')
     const [aula, setAula] = useState('')
     const [msg, setMsg] = useState('')
+    const [optionsFase, setOptionsFase] = useState([]);
 
-    const optionsFase = [
+    /*const LoptionsFase = [
         { value: '0', label: 'Fase 0' },
         { value: '1', label: 'Fase 1' },
         { value: '2', label: 'Fase 2' },
@@ -25,7 +27,7 @@ export default function SendMessage({history}) {
         { value: '10', label: 'Fase 10' },
         { value: '11', label: 'Fase 11' },
         { value: '12', label: 'Fase 12' },
-    ]
+    ]*/
     const optionsAula = [
         { value: '1', label: 'Aula 1' },
         { value: '2', label: 'Aula 2' },
@@ -45,9 +47,29 @@ export default function SendMessage({history}) {
         { value: '16', label: 'Aula 16' },
     ]
 
-    function handleFaseChange(newFase){
-        const inputFase = newFase.value;
-        setFase(inputFase);
+    
+
+    useMemo(()=>{
+        async function getFases(){
+            const _fases = await api.get('/fases');
+            _fases.data.map(fase=>{
+                setOptionsFase(old=> [...old,{
+                    value: fase, label: fase
+                }])
+            })
+        }
+        getFases();
+    },[]);
+
+
+    function handleFaseChange(newFase, actionMeta){
+        console.group('Value Changed!');
+        if(newFase !== null){
+            const inputFase = newFase.value;
+            console.log(`action ${actionMeta.action}`)
+            setFase(inputFase);
+        }
+        console.groupEnd();
     }
     function handleAulaChange(newAula){
         const inputAula = newAula.value;
@@ -75,7 +97,7 @@ export default function SendMessage({history}) {
             <Form onSubmit={e=>handleSubmit(e)}>
                 <h1>Cadastro de Mensagem</h1>
             
-                <Selectable options={optionsFase} onChange={handleFaseChange} placeholder='Selecione uma Fase'/>
+                <Selectable options={optionsFase} onChange={handleFaseChange} placeholder='Selecione uma Fase' isClearable/>
                 <Selectable options={optionsAula} onChange={handleAulaChange} placeholder='Selecione uma Aula'/>
                 <textarea onChange={e=>setMsg(e.target.value)} value={msg}></textarea>
                 <button type='submit'>

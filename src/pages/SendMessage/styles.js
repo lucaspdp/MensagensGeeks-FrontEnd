@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import Select from 'react-select';
+import Select from 'react-select/creatable';
 
 export const Container = styled.div`
 `;

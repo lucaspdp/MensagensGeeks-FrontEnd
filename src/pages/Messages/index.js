@@ -7,16 +7,18 @@ import { FaWindowClose } from 'react-icons/fa';
 
 export default function Messages({history}) {
 
-  const fases = [0,1,2,3,4,5,6,7,8,9,10,11,12];
+  const [fases, setFases] = useState([]);
   const [faseAtual, setFaseAtual] = useState(0);
   const [messages, setMessages] = useState([]);
 
   useEffect(()=>{
-    async function loadMessages(){
+    async function loadMessagesAndFases(){
       const response = await api.get(`/messages?fase=${faseAtual}`).catch(e=>{});
+      const _fases = await api.get('/fases');
+      setFases(_fases.data)
       setMessages(response.data);
     }
-    loadMessages();
+    loadMessagesAndFases();
   }, [faseAtual])
 
   async function handleClickFase(e, fase){
@@ -30,9 +32,9 @@ export default function Messages({history}) {
   return (
     <Container>
         <SideMenu>
-          {fases.map(fase=>(
+          {fases && fases.map(fase=>(
             <div key={fase} onClick={e=>handleClickFase(e, fase)}>
-              <span style={{color: faseAtual === fase && ('#f0f250')}}>Fase {fase}</span>
+              <span style={{color: faseAtual === fase && ('#f0f250')}}>{fase}</span>
             </div>
           ))}
         </SideMenu>

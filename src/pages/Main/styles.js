@@ -1,19 +1,43 @@
 import styled from 'styled-components';
 
-export const Container = styled.div`
-    width: 500px;
-    height: 350px;
-    padding: 10px;
-
-    background: linear-gradient(to right ,#852020, #5B1B1B);
-
-    border-radius: 20px;
-
+export const Imagem = styled.div`
+    height: 100vh;
+    width: 70%;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin: 10% auto;
+
+    @keyframes bump{
+        from{
+            height: 50%;
+            width: 50%;
+            filter: grayscale(30%) brightness(70%);
+        }
+        to{
+            height: 55%;
+            width: 55%;
+            filter: grayscale(25%) brightness(70%);
+        }
+    }
+
+    img{
+        height: 50%;
+        width: 50%;
+        object-fit: contain;
+        animation: bump 1s alternate infinite;
+
+    }
+`;
+
+export const Container = styled.div`
+
+    min-height: 100vh;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
 
     h1{
         color: #fff;
@@ -24,16 +48,25 @@ export const Container = styled.div`
 
 export const Form = styled.form`
 
+    width: 30%;
+    height: 100vh;
+
     display:flex;
     align-items: center;
     flex-direction: column;
+    justify-content: center;
 
-    margin-top: 40px;
+    background: linear-gradient(to right , #852020, #361414);
+
+    h1{
+        font-size: 4em;
+    }
 
     input{
         height: 40px;
         width: 300px;
 
+        margin-top: 50px;
         text-align: center;
         border: 0;  
         border-radius: 10px;
