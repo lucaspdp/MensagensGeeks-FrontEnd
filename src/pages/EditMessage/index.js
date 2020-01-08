@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import api from '../../services/api';
 
 import { Container, Form, ExitButton } from './styles';
-import { FaArrowRight, FaWindowClose } from 'react-icons/fa';
+import { FaArrowRight, FaWindowClose, FaTrash } from 'react-icons/fa';
 
 export default function SendMessage({match, history}) {
 
@@ -30,6 +30,14 @@ export default function SendMessage({match, history}) {
         history.push('/messages')
     }
 
+    async function deleteMessage(){
+        const {msgid} = match.params;
+
+        await api.delete(`/message/${msgid}`);
+
+        history.push('/messages');
+    }
+
     return (
         <Container>
             <Form onSubmit={handleSubmit}>
@@ -40,6 +48,9 @@ export default function SendMessage({match, history}) {
                 <textarea value={_msg} onChange={e=>setMsg(e.target.value)}></textarea>
                 <button type='submit'>
                     <FaArrowRight color="#fff" />
+                </button>
+                <button type='button' onClick={()=>deleteMessage()}>
+                    <FaTrash color="#fff" />
                 </button>
             </Form>
             <ExitButton>
